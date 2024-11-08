@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم المسؤول</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">الرئيسية</a></li>
+        <li><a href="/about">حول المدرسة</a></li>
+        <li><a href="/news">الأخبار</a></li>
+        <li><a href="/contact">الاتصال</a></li>
+        <li><a href="/admin">لوحة تحكم المسؤول</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="content">
+    <h1>لوحة تحكم المسؤول</h1>
+    <form id="updateForm">
+      <label for="page">اختر الصفحة لتحديث محتواها:</label>
+      <select id="page" name="page">
+        <option value="home">الرئيسية</option>
+        <option value="about">حول المدرسة</option>
+        <option value="news">الأخبار</option>
+        <option value="contact">اتصل بنا</option>
+      </select>
+
+      <label for="content">المحتوى الجديد:</label>
+      <textarea id="content" name="content" rows="10" cols="30"></textarea>
+
+      <button type="submit">تحديث المحتوى</button>
+    </form>
+    <p id="status"></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 مدرسة رحال بن أحمد الثانوية</p>
+  </footer>
+
+  <script>
+    document.getElementById('updateForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const page = document.getElementById('page').value;
+      const content = document.getElementById('content').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/api/updateContent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ page, content }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          document.getElementById('status').innerText = data.message;
+          document.getElementById('status').style.color = 'green';
+        } else {
+          document.getElementById('status').innerText = data.error;
+          document.getElementById('status').style.color = 'red';
+        }
+      } catch (error) {
+        document.getElementById('status').innerText = 'حدث خطأ. يرجى المحاولة لاحقًا.';
+        document.getElementById('status').style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
