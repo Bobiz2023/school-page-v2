@@ -14,17 +14,32 @@
         <li><a href="/about">حول المدرسة</a></li>
         <li><a href="/news">الأخبار</a></li>
         <li><a href="/contact">الاتصال</a></li>
+        <li><a href="/admin">لوحة تحكم المسؤول</a></li>
       </ul>
     </nav>
   </header>
 
   <section class="hero">
-    <h1>مرحبًا بكم في مدرسة رحال بن أحمد</h1>
-    <p>نحن نقدم تعليمًا متميزًا في بيئة تحفز الإبداع والتفوق.</p>
+    <h1 id="home-title"></h1>
+    <p id="home-content"></p>
   </section>
 
   <footer>
     <p>&copy; 2024 مدرسة رحال بن أحمد الثانوية</p>
   </footer>
+
+  <script>
+    async function loadContent() {
+      try {
+        const response = await fetch('http://localhost:3000/api/content');
+        const data = await response.json();
+        document.getElementById('home-title').innerText = data.home;
+        document.getElementById('home-content').innerText = data.home;
+      } catch (error) {
+        console.error('Error loading content', error);
+      }
+    }
+    loadContent();
+  </script>
 </body>
 </html>
